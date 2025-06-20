@@ -1,5 +1,5 @@
 {
-  description = "Rust devshell";
+  description = "Rust Development Shell";
 
   inputs = {
     nixpkgs.url      = "github:NixOS/nixpkgs/nixos-unstable";
@@ -21,15 +21,15 @@
           buildInputs = [
             openssl
             pkg-config
-            eza
-            fd
-            rust-bin.beta.latest.default
+            (
+              rust-bin.selectLatestNightlyWith (toolchain: toolchain.default.override {
+                extensions = [
+                  "rust-src"
+                  "rust-analyzer"
+                ];
+              })
+            )
           ];
-
-          shellHook = ''
-            alias ls=eza
-            alias find=fd
-          '';
         };
       }
     );
